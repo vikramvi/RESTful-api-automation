@@ -10,12 +10,15 @@ import org.junit.Test;
 import com.jayway.restassured.path.json.JsonPath;
 import static com.jayway.restassured.RestAssured.given;
 import static com.jayway.restassured.RestAssured.with;
+import static com.jayway.restassured.http.ContentType.JSON;
+import java.util.HashMap;
+import java.util.Map;
 
 public class WLApi {
  
 	//https://developer.wunderlist.com/apps
-	private String access_Token = "xxx";
-	private String client_ID = "xxx";
+	private String access_Token = "dummy";
+	private String client_ID = "dummy";
 	
 	//https://developer.wunderlist.com/documentation
 	private String APIUrl = "https://a.wunderlist.com/api/v1";
@@ -44,8 +47,8 @@ public class WLApi {
 	
 	@Test
 	public void createList(){
-		   //Map<String, Object>  jsonAsMap = new HashMap<>();
-		   //jsonAsMap.put("title", "ECLIPSE-list");
+		   Map<String, Object>  jsonAsMap = new HashMap<>();
+		   jsonAsMap.put("title", "ECLIPSE-list");
 		
 	       final String body = with().headers("X-Access-Token",access_Token, "X-Client-ID",client_ID).
 			                          contentType("application/json; charset=utf-8").
@@ -58,15 +61,26 @@ public class WLApi {
 	       System.out.println ( "list_id -> " + list_id );
 
 		
-	       // Approach - 1
+	       //Approach - 1
 	       /*given().headers("X-Access-Token",access_Token,"X-Client-ID",client_ID).
-			         contentType("application/json; charset=utf-8").	
-			         //body(jsonAsMap).
-			         body("{\"title\":\"ECLIPSE-list-1111\"}").
-	         when().
-                    post(APIUrl + "/lists").
-             then().
-                    statusCode(201);*/
+			       contentType("application/json; charset=utf-8").	
+	               body("{\"title\":\"ECLIPSE-list-1111\"}").
+	       when().
+                   post(APIUrl + "/lists").
+           then().
+                   statusCode(201);*/
+	       
+	      //Approach - 2 
+	      //https://github.com/jayway/rest-assured/issues/626
+	      //https://github.com/jayway/rest-assured/wiki/Usage#object-mapping
+	      //Create JSON from a HashMap
+	      /* given().headers("X-Access-Token",access_Token,"X-Client-ID",client_ID).
+	               contentType(JSON).
+	               body(jsonAsMap).
+	       when().
+                   post(APIUrl + "/lists").
+           then().
+                   statusCode(201);*/
 	}
 	
 	@Test
