@@ -6,6 +6,8 @@
 
 package com.vikramvi.wlapi.junit;
 
+import org.junit.runners.MethodSorters;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 
 import com.jayway.restassured.path.json.JsonPath;
@@ -25,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class WLApiTest {
  
 	//https://developer.wunderlist.com/apps
@@ -38,7 +41,7 @@ public class WLApiTest {
 	static private int task_id = 0 ;
 	
 	@Test
-	public void oAuth2(){
+	public void testA_oAuth2(){
 		   given().headers("X-Access-Token",access_Token, "X-Client-ID",client_ID).    
 		           auth().oauth2(access_Token).
 		   when().
@@ -48,7 +51,7 @@ public class WLApiTest {
 	}
 	
 	@Test
-	public void getLists(){
+	public void testB_getLists(){
 		   given().
 		           headers("X-Access-Token",access_Token, "X-Client-ID",client_ID).
 	       when().
@@ -58,7 +61,7 @@ public class WLApiTest {
 	}
 	
 	@Test
-	public void createList(){
+	public void testC_createList(){
 		   SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	       Date now = new Date();
 	       String strDate = sdfDate.format(now);
@@ -121,7 +124,7 @@ public class WLApiTest {
     }
 	
 	@Test
-	public void createTask(){
+	public void testD_createTask(){
 		      //list_id = 231294978;
 		      //String taskName1 = "POST-TASKasdsad";
 		      
@@ -158,7 +161,7 @@ public class WLApiTest {
 	
 	@Test
 	//https://github.com/jayway/rest-assured/issues/627
-	public void fileUploadToTask(){
+	public void testE_fileUploadToTask(){
 		try{
 				//task_id = 1565307319;
 				
@@ -252,7 +255,7 @@ public class WLApiTest {
 	}
 	
 	@Test
-	public void EditTask(){
+	public void testF_EditTask(){
 				//task_id = 1563559545;
 				
 				/* given().headers("X-Access-Token",access_Token, "X-Client-ID",client_ID).
@@ -282,7 +285,7 @@ public class WLApiTest {
     }
 	
 	@Test
-	public void DeleteTask(){
+	public void testG_DeleteTask(){
 		   //task_id = 1565307319;
 		   //list_id = 231294978;
 		
@@ -303,7 +306,7 @@ public class WLApiTest {
    }
 	
 	@Test
-	public void EditList(){
+	public void testH_EditList(){
 		   //list_id = 231475725;
 		
 		   //debug purpose to check revision
@@ -330,7 +333,7 @@ public class WLApiTest {
 	}
 	
 	@Test
-	public void DeleteList(){
+	public void testI_DeleteList(){
 		   //list_id = 229932841;
 		   
 		   //debug purpose to check revision
