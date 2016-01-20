@@ -37,8 +37,9 @@ public class WLApiTest {
 	//https://developer.wunderlist.com/documentation
 	private String APIUrl = "https://a.wunderlist.com/api/v1";
 	
-	static private int list_id = 0 ; 
-	static private int task_id = 0 ;
+	static private int list_id   = 0 ; 
+	static private int task_id   = 0 ;
+	static private int folder_id = 0 ;
 	
 	@Test
 	public void testA_oAuth2(){
@@ -333,7 +334,50 @@ public class WLApiTest {
 	}
 	
 	@Test
-	public void testI_DeleteList(){
+	public void testI_FolderAPIs(){
+		   //list_id = 231294978;
+	       String folderName = "API-Folder";
+	       int[] list_ids = { list_id };
+	       
+	       Map<Object, Object>  jsonAsMap = new HashMap<>();
+	       jsonAsMap.put("title", folderName  );
+	       jsonAsMap.put("list_ids",list_ids );
+	            
+		     given().headers("X-Access-Token",access_Token, "X-Client-ID",client_ID).
+	                 contentType("application/json; charset=utf-8").	
+	                 contentType(JSON).
+	                 body(jsonAsMap).
+	         when().
+	                 post(APIUrl + "/folders").
+	         then().
+	                 statusCode(201);
+		     
+		     
+		     final String body = with().
+		    		                   headers("X-Access-Token",access_Token, "X-Client-ID",client_ID).
+	                                   contentType("application/json; charset=utf-8").
+	                             when().
+	                                   get(APIUrl + "/folders").asString();
+	
+	         System.out.println("Folders GET  "+ body);
+	
+	         final JsonPath jsonPath = new JsonPath(body);
+	         final List <Integer> folders = jsonPath.getList("id");
+	         folder_id =  folders.get( folders.size() - 1);
+	         
+	         System.out.println ("Newly Created Folder Id: " + folder_id );
+         
+	         
+	         given().headers("X-Access-Token",access_Token, "X-Client-ID",client_ID).
+                     contentType("application/json; charset=utf-8").	
+             when().
+                     delete(APIUrl + "/folders/"+ folder_id +"?revision=1").
+             then().
+                     statusCode(204);
+	}
+	
+	@Test
+	public void testJ_DeleteList(){
 		   //list_id = 229932841;
 		   
 		   //debug purpose to check revision
